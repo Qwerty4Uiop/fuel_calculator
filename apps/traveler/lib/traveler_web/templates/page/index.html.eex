@@ -1,0 +1,60 @@
+<%= form_tag("/calc", method: "get") do %>
+  <input type="number" name="ship_mass" step=0.000001 required placeholder="Ship mass">
+  <div id="paths">
+    <div>
+      <select name="from_0">
+        <%= for %{object_name: name, gravity: gravity} <- space_objects() do %>
+          <option value=<%= name %>><%= "#{name} (gravity: #{gravity})" %></option>
+        <% end %>
+      </select>
+      <select name="to_0">
+          <%= for %{object_name: name, gravity: gravity} <- space_objects() do %>
+            <option value=<%= name %>><%= "#{name} (gravity: #{gravity})"  %></option>
+          <% end %>
+      </select>
+    </div>
+  </div>
+  <input type="button" onclick="addOption()" value="Add path">
+  <input type="submit" value="Calculate fuel">
+<% end %>
+
+<%= form_tag("/add_object", method: "post") do %>
+  <input type="text" name="object_name" required placeholder="Object name">
+  <input type="number" name="gravity" step=0.000001 required placeholder="Gravity (m/s2)">
+
+  <input type="submit" value="Add space object">
+<% end %>
+
+<script src="<%= Routes.static_path(@conn, "/js/app.js") %>"></script>
+<script>
+function addOption() {
+    var selectContainer = document.getElementById("paths");
+    var newDiv = document.createElement("div");
+    var newSelect1 = document.createElement("select");
+    var newSelect2 = document.createElement("select");
+    var options = selectContainer.children[0].children[0].options;
+    //var lastSelect = selectContainer.children[selectContainer.children.length - 1].children[1];
+    //var lastSelectValue = lastSelect.options[lastSelect.selectedIndex].text;
+    newSelect1.name = "from_" + selectContainer.childElementCount;
+
+    for (var i = 0; i < options.length; i++) {
+        var newOption1 = document.createElement("option");
+        var newOption2 = document.createElement("option");
+        newOption1.innerText = options[i].innerText;
+        newOption1.value = options[i].value;
+        newOption2.innerText = options[i].innerText;
+        newOption2.value = options[i].value;
+        //if (lastSelectValue == options[i].text) newOption1.selected = true;
+        newSelect1.appendChild(newOption1);
+        newSelect2.appendChild(newOption2);
+    }
+
+    //newSelect1.disabled = true;
+    //lastSelect.disabled = true;
+    newSelect2.name = "to_" + selectContainer.childElementCount;
+    newDiv.appendChild(newSelect1);
+    newDiv.innerHTML += "\n";
+    newDiv.appendChild(newSelect2);
+    selectContainer.appendChild(newDiv);
+}
+</script>
