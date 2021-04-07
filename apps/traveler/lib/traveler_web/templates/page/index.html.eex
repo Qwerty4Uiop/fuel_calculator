@@ -33,8 +33,6 @@ function addOption() {
     var newSelect1 = document.createElement("select");
     var newSelect2 = document.createElement("select");
     var options = selectContainer.children[0].children[0].options;
-    //var lastSelect = selectContainer.children[selectContainer.children.length - 1].children[1];
-    //var lastSelectValue = lastSelect.options[lastSelect.selectedIndex].text;
     newSelect1.name = "from_" + selectContainer.childElementCount;
 
     for (var i = 0; i < options.length; i++) {
@@ -44,13 +42,10 @@ function addOption() {
         newOption1.value = options[i].value;
         newOption2.innerText = options[i].innerText;
         newOption2.value = options[i].value;
-        //if (lastSelectValue == options[i].text) newOption1.selected = true;
         newSelect1.appendChild(newOption1);
         newSelect2.appendChild(newOption2);
     }
 
-    //newSelect1.disabled = true;
-    //lastSelect.disabled = true;
     newSelect2.name = "to_" + selectContainer.childElementCount;
     newDiv.appendChild(newSelect1);
     newDiv.innerHTML += "\n";

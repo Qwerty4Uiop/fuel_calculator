@@ -13,9 +13,3 @@ import "../css/app.scss"
 //     import socket from "./socket"
 //
 import "phoenix_html"
-
-function addOption() {
-    var newOption = document.createElement("option");
-    newOption.innerHTML = "zzxc";
-    document.getElementById("select").appendChild(newOption);
-}
