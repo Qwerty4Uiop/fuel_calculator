@@ -14,6 +14,11 @@ defmodule TravelerWeb.PageControllerTest do
     assert html_response(conn, 200) =~ "Error: invalid_path"
   end
 
+  test "returns an error if ship mass is negative", %{conn: conn} do
+    conn = get(conn, "/calc", %{"ship_mass" => "-28801", "from_0" => "Earth", "to_0" => "Moon", "from_1" => "Moon", "to_1" => "Earth"})
+    assert html_response(conn, 200) =~ "Error: negative_ship_mass"
+  end
+
   test "adds a new space object", %{conn: conn} do
     post(conn, "/add_object", %{"gravity" => "10.44", "object_name" => "Saturn"})
     assert %{object_name: "Saturn", gravity: 10.44} = Repo.get_by(SpaceObject, object_name: "Saturn")

@@ -12,7 +12,7 @@ You can use the core from the command line:
 $ iex -S mix
 
 iex(1)> CalculatorCore.calculate_fuel(28801, [{:launch, 9.807}, {:land, 1.62}, {:launch, 1.62}, {:land, 9.807}])
-51898
+{:ok, 51898}
 ```
 or you can try the demo web app [here](http://82.148.30.32:4000/)
 

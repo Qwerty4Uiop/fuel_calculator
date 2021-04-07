@@ -1,5 +1,5 @@
 <%= form_tag("/calc", method: "get") do %>
-  <input type="number" name="ship_mass" step=0.000001 required placeholder="Ship mass">
+  <input type="number" name="ship_mass" step=0.000001 min=0 required placeholder="Ship mass">
   <div id="paths">
     <div>
       <select name="from_0">

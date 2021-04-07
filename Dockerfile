@@ -5,8 +5,8 @@ RUN mix local.hex --force
 RUN mix local.rebar --force
 
 COPY mix.exs mix.lock config/ ./
-COPY apps/calculator_core/mix.exs ./apps/calculator_core
-COPY apps/traveler/mix.exs ./apps/traveler
+COPY apps/calculator_core/mix.exs ./apps/calculator_core/
+COPY apps/traveler/mix.exs ./apps/traveler/
 
 RUN mix deps.get
 

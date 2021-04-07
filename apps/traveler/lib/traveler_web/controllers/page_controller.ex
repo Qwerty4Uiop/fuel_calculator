@@ -9,8 +9,8 @@ defmodule TravelerWeb.PageController do
 
   def calc(conn, params) do
     with {mass_number, _rest} <- Float.parse(params["ship_mass"]),
-         {:ok, full_path} <- format_calc_params(params) do
-      fuel_weight = CalculatorCore.calculate_fuel(mass_number, full_path)
+         {:ok, full_path} <- format_calc_params(params),
+         {:ok, fuel_weight} <- CalculatorCore.calculate_fuel(mass_number, full_path) do
       render(conn, "calc_result.html", fuel_weight: fuel_weight)
     else
       {:error, error} -> render(conn, "error.html", error: error)

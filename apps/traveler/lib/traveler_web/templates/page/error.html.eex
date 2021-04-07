@@ -5,6 +5,7 @@
        <% :invalid_path -> %> <%= "Please enter the correct path (every source must match the previous destination)" %>
        <% :empty_source -> %> <%= "You can't leave sources empty" %>
        <% :empty_destination -> %> <%= "You can't leave destinations empty" %>
+       <% :negative_ship_mass -> %> <%= "Ship mass cannot be negative" %>
     <% end %>
   </p>
 </div>

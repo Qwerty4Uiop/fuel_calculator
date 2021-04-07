@@ -7,22 +7,27 @@ defmodule CalculatorCore do
   ## Examples
 
       iex> CalculatorCore.calculate_fuel(28801, [{:launch, 9.807}, {:land, 1.62}])
-      22380
+      {:ok, 22380}
 
   """
-  @spec calculate_fuel(number, [{:launch | :land, number}]) :: integer
+  @spec calculate_fuel(number, [{:launch | :land, number}]) :: {:ok, integer} | {:error, :negative_ship_mass}
   def calculate_fuel(ship_mass, travel_path) do
-    travel_path
-    # To calculate ship mass including fuel at the start of travel we should start from the end
-    # because this is the point when ship will be empty
-    # so we can just add required fuel on each step instead of recalculate all previous steps on each total fuel changing
-    |> Enum.reverse()
-    |> Enum.reduce(ship_mass, fn {action, gravity}, result_mass ->
-      {coef, subtrahend} = constants(action)
-      result_mass + calculate_additional_fuel(result_mass, gravity, coef, subtrahend)
-    end)
-    |> Kernel.-(ship_mass)
-    |> trunc()
+    with :ok <- check_ship_mass(ship_mass) do
+      result_fuel =
+        travel_path
+        # To calculate ship mass including fuel at the start of travel we should start from the end
+        # because this is the point when ship will be empty
+        # so we can just add required fuel on each step instead of recalculate all previous steps on each total fuel changing
+        |> Enum.reverse()
+        |> Enum.reduce(ship_mass, fn {action, gravity}, result_mass ->
+          {coef, subtrahend} = constants(action)
+          result_mass + calculate_additional_fuel(result_mass, gravity, coef, subtrahend)
+        end)
+        |> Kernel.-(ship_mass)
+        |> trunc()
+
+      {:ok, result_fuel}
+    end
   end
 
   defp calculate_additional_fuel(0, _gravity, _coef, _subtrahend), do: 0
@@ -34,6 +39,8 @@ defmodule CalculatorCore do
   end
 
   defp do_calculate_fuel(mass, gravity, coef, subtrahend), do: trunc(mass * gravity * coef - subtrahend)
+
+  defp check_ship_mass(ship_mass), do: if ship_mass < 0, do: {:error, :negative_ship_mass}, else: :ok
 
   @launch_coef 0.042
   @land_coef 0.033
